@@ -27,7 +27,7 @@ class Employee(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     file_number = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=100)
-    job_rank = models.IntegerField(choices=JOB_RANK_CHOICES)
+    job_rank = models.IntegerField(choices=JOB_RANK_CHOICES, null=True)
     job_title = models.CharField(max_length=100)
     department = models.ForeignKey(Department, null=True, blank=True, on_delete=models.SET_NULL)
     
@@ -48,7 +48,7 @@ class Profile(models.Model):
 class QuestionCategory(models.Model):
     
     name = models.CharField(max_length=100)
-    job_rank = models.IntegerField(choices=Employee.JOB_RANK_CHOICES)
+    job_rank = models.IntegerField(choices=Employee.JOB_RANK_CHOICES, null=True)
     
     def __str__(self):
         return f"{self.name} - {self.get_job_rank_display()}"
@@ -96,7 +96,7 @@ class Answer(models.Model):
     
     evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice = models.IntegerField(choices=CHOICES)
+    choice = models.IntegerField(choices=CHOICES, null=True)
     
     def __str__(self):
         return f"{self.question.text}: {self.get_choice_display()}"
