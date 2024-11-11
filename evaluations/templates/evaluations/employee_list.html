@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>لیست کارکنان</h2>
+<a href="{% url 'create_employee' %}">ایجاد کارمند جدید</a>
+<ul>
+    {% for employee in employees %}
+    <li>
+        {{ employee.name }} ({{ employee.file_number }})
+        - <a href="{% url 'evaluate_employee' employee.id %}?month=1">ارزیابی</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

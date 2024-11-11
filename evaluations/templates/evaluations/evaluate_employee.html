@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>ارزیابی {{ employee.name }}</h2>
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="month" value="{{ month }}">
+    {% for question in questions %}
+    <p>{{ question.order }}. {{ question.text }}</p>
+    {% for value, label in question.choice_set.all %}
+    <label><input type="radio" name="question_{{ question.id }}" value="{{ value }}" {% if forloop.first %}checked{% endif %}> {{ label }}</label>
+    {% endfor %}
+    {% endfor %}
+    <input type="submit" value="ثبت ارزیابی">
+</form>
+{% endblock %}

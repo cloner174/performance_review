@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>ارزیابی {{ evaluation.employee.name }} در تاریخ {{ evaluation.date }}</h2>
+<ul>
+    {% for answer in answers %}
+    <li>{{ answer.question.order }}. {{ answer.question.text }} - {{ answer.get_choice_display }}</li>
+    {% endfor %}
+</ul>
+<p>امتیاز کل: {{ evaluation.scores.total_score }}</p>
+<a href="{% url 'export_evaluation_to_excel' evaluation.id %}">دانلود به صورت اکسل</a>
+{% endblock %}

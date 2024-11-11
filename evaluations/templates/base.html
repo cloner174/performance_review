@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Performance Evaluation</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <p>خوش آمدید، {{ user.username }}!</p>
+        <a href="{% url 'employee_list' %}">لیست کارکنان</a>
+        <a href="{% url 'logout' %}">خروج</a>
+    {% else %}
+        <a href="{% url 'login' %}">ورود</a>
+    {% endif %}
+    <hr>
+    {% block content %}{% endblock %}
+</body>
+</html>
