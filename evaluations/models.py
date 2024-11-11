@@ -24,7 +24,7 @@ class Employee(models.Model):
         (3, 'کارگر'),         # Kargar
     ]
     
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     file_number = models.CharField(max_length=20, unique=True)
     name = models.CharField(max_length=100)
     job_rank = models.IntegerField(choices=JOB_RANK_CHOICES, null=True)
@@ -37,7 +37,7 @@ class Employee(models.Model):
 
 class Profile(models.Model):
     
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     department = models.ForeignKey(Department, null=True, blank=True, on_delete=models.SET_NULL)
     # سایر مشخصات اگر نیازه اضافه بشه
     
@@ -68,7 +68,7 @@ class Evaluation(models.Model):
     
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
     evaluator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True, null=True)
     month = models.IntegerField(null=True)
     total_score = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     scores = models.JSONField(default=dict)
