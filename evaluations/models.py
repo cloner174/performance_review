@@ -58,7 +58,7 @@ class Question(models.Model):
     
     category = models.ForeignKey(QuestionCategory, on_delete=models.CASCADE)
     text = models.CharField(max_length=500)
-    order = models.IntegerField()
+    order = models.IntegerField(null=True)
     
     def __str__(self):
         return f"{self.text} (Order {self.order})"
@@ -69,7 +69,7 @@ class Evaluation(models.Model):
     employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
     evaluator = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
-    month = models.IntegerField()
+    month = models.IntegerField(null=True)
     total_score = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
     scores = models.JSONField(default=dict)
     
