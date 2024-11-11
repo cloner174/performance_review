@@ -56,7 +56,7 @@ class QuestionCategory(models.Model):
 
 class Question(models.Model):
     
-    category = models.ForeignKey(QuestionCategory, on_delete=models.CASCADE)
+    category = models.ForeignKey(QuestionCategory, on_delete=models.CASCADE, null=True)
     text = models.CharField(max_length=500)
     order = models.IntegerField(null=True)
     
@@ -66,8 +66,8 @@ class Question(models.Model):
 
 class Evaluation(models.Model):
     
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    evaluator = models.ForeignKey(User, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
+    evaluator = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     date = models.DateField(auto_now_add=True)
     month = models.IntegerField(null=True)
     total_score = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)
@@ -94,8 +94,8 @@ class Answer(models.Model):
         (1, 'ضعیف'),
     ]
     
-    evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    evaluation = models.ForeignKey(Evaluation, on_delete=models.CASCADE, null=True)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True)
     choice = models.IntegerField(choices=CHOICES, null=True)
     
     def __str__(self):
