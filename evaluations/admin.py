@@ -2,7 +2,6 @@ from django.contrib import admin
 
 # Register your models here.
 
-from django.contrib import admin
 from .models import Department, Employee, Profile, QuestionCategory, Question, Evaluation, Answer
 
 
@@ -19,6 +18,7 @@ class EmployeeAdmin(admin.ModelAdmin):
     
     def get_job_rank_display(self, obj):
         return obj.get_job_rank_display()
+    
     get_job_rank_display.short_description = 'Job Rank'
 
 
@@ -34,6 +34,7 @@ class QuestionCategoryAdmin(admin.ModelAdmin):
     
     def get_job_rank_display(self, obj):
         return obj.get_job_rank_display()
+    
     get_job_rank_display.short_description = 'Job Rank'
 
 
@@ -41,14 +42,15 @@ class QuestionCategoryAdmin(admin.ModelAdmin):
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('text', 'category', 'order')
     list_filter = ('category',)
-    
+    search_fields = ('text',)
+
 
 @admin.register(Evaluation)
 class EvaluationAdmin(admin.ModelAdmin):
     list_display = ('employee', 'evaluator', 'date', 'month', 'total_score')
     search_fields = ('employee__name', 'evaluator__username')
     list_filter = ('month',)
-    
+
 
 @admin.register(Answer)
 class AnswerAdmin(admin.ModelAdmin):

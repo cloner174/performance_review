@@ -1,0 +1,13 @@
+
+{% extends 'evaluations/base.html' %}
+{% load static %}
+{% load group_tags %}
+
+{% block content %}
+<h2>ورود به سیستم</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">ورود</button>
+</form>
+{% endblock %}

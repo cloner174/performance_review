@@ -1,0 +1,47 @@
+
+{% load static %}
+{% load group_tags %}
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>سیستم ارزیابی عملکرد</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>سیستم ارزیابی عملکرد</h1>
+        <nav>
+            <ul>
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'home' %}">خانه</a></li>
+                    {% if user|has_group:"Manager" or user|has_group:"General Manager" %}
+                        <li><a href="{% url 'employee_list' %}">لیست کارکنان</a></li>
+                        <li><a href="{% url 'create_employee' %}">ایجاد کارمند جدید</a></li>
+                    {% elif user|has_group:"Employee" %}
+                        <li><a href="{% url 'view_own_evaluations' %}">ارزیابی‌های من</a></li>
+                    {% endif %}
+                    <li>
+                        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background: none; border: none; padding: 0; font: inherit; color: inherit; cursor: pointer;">خروج</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">ورود</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    <hr>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <hr>
+        <p>&copy; 2024 سیستم ارزیابی عملکرد</p>
+    </footer>
+</body>
+</html>

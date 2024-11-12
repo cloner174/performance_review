@@ -1,12 +1,19 @@
-{% extends 'base.html' %}
+{% extends 'evaluations/base.html' %}
 
 {% block content %}
-<h2>ارزیابی {{ evaluation.employee.name }} در تاریخ {{ evaluation.date }}</h2>
-<ul>
+<h2>نتایج ارزیابی {{ evaluation.employee.name }}</h2>
+<table>
+    <tr>
+        <th>سوال</th>
+        <th>پاسخ</th>
+    </tr>
     {% for answer in answers %}
-    <li>{{ answer.question.order }}. {{ answer.question.text }} - {{ answer.get_choice_display }}</li>
+    <tr>
+        <td>{{ answer.question.text }}</td>
+        <td>{{ answer.get_choice_display }}</td>
+    </tr>
     {% endfor %}
-</ul>
-<p>امتیاز کل: {{ evaluation.scores.total_score }}</p>
+</table>
+<p>مجموع امتیازات: {{ evaluation.total_score }}</p>
 <a href="{% url 'export_evaluation_to_excel' evaluation.id %}">دانلود به صورت اکسل</a>
 {% endblock %}

@@ -1,8 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 
 # Create your views here.
 
-from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group, User
 from django.contrib.auth.mixins import UserPassesTestMixin
@@ -11,10 +10,23 @@ from django.core.exceptions import PermissionDenied
 from django.utils import timezone
 from django.views import View
 
-from .models import Employee, Evaluation, Answer, Question, Department, QuestionCategory
+from .models import Employee, Evaluation, Answer, Question, Department, Profile
 from .forms import EvaluationForm
 
 import openpyxl
+
+
+@login_required
+def home(request):
+    user = request.user
+    if user.is_superuser:
+        return redirect('/admin/')
+    if is_employee(user):
+        return redirect('view_own_evaluations')
+    elif is_manager(user) or is_general_manager(user):
+        return redirect('employee_list')
+    else:
+        return render(request, 'evaluations/unauthorized.html')
 
 
 def is_employee(user):
@@ -58,16 +70,13 @@ def create_employee(request):
         job_rank = request.POST.get('job_rank')
         department_id = request.POST.get('department')
         
-        # ایجاد یک یوزر جدید
         username = f"user_{file_number}"
         password = User.objects.make_random_password()
         user = User.objects.create_user(username=username, password=password)
         
-        # تخصیص 'Employee' به group
         employee_group = Group.objects.get(name='Employee')
         user.groups.add(employee_group)
         
-        # ایجاد سابقه ی کارمند
         employee = Employee.objects.create(
             user=user,
             file_number=file_number,
@@ -77,10 +86,17 @@ def create_employee(request):
             department_id=department_id
         )
         
-        user.profile.department_id = department_id
-        user.profile.save()
-        
-        # ارسال اطلاعات به وسیله ی ایمیل برای کارفرما
+        if hasattr(user, 'profile'):
+            user.profile.department_id = department_id
+            user.profile.save()
+        else:
+            Profile.objects.create(user=user, department_id=department_id)
+        # send_mail(
+        #     'اطلاعات ورود به سیستم',
+        #     f'نام کاربری: {username}\nرمز عبور: {password}',
+        #     'from@example.com',
+        #     [user.email],
+        # )
         return redirect('employee_list')
     
     else:
@@ -94,7 +110,6 @@ def evaluate_employee(request, employee_id):
     employee = get_object_or_404(Employee, id=employee_id)
     user = request.user
     
-    # برسی دسترسی
     if is_general_manager(user):
         pass
     elif is_manager(user):
@@ -151,7 +166,6 @@ def view_evaluation(request, evaluation_id):
     evaluation = get_object_or_404(Evaluation, id=evaluation_id)
     user = request.user
     
-    # برسی اجازه دسترسی
     if is_general_manager(user):
         pass
     elif is_manager(user):
@@ -175,7 +189,6 @@ def export_evaluation_to_excel(request, evaluation_id):
     evaluation = get_object_or_404(Evaluation, id=evaluation_id)
     user = request.user
     
-    # برسی اجازه دسترسی
     if is_general_manager(user):
         pass
     
@@ -195,21 +208,17 @@ def export_evaluation_to_excel(request, evaluation_id):
     sheet = wb.active
     sheet.title = 'Evaluation'
     
-    # تیتر
     sheet['A1'] = 'شرح عوامل ارزیابی'
     sheet['B1'] = 'امتیاز'
     
-    # دیتا
     for idx, answer in enumerate(answers, start=2):
         sheet.cell(row=idx, column=1).value = answer.question.text
         sheet.cell(row=idx, column=2).value = answer.get_choice_display()
     
-    # مجموع امتیاز
     idx += 1
     sheet.cell(row=idx, column=1).value = 'مجموع امتیازات'
     sheet.cell(row=idx, column=2).value = evaluation.total_score
     
-    # پاسخ
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     filename = f"evaluation_{evaluation.employee.file_number}_{evaluation.month}.xlsx"
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
