@@ -1,7 +1,7 @@
 #به نام خدا
 
 from django.core.management.base import BaseCommand
-from evaluations.models import QuestionCategory, Question
+from evaluations.models import QuestionCategory, Question, JobRank
 from django.db import transaction
 
 
@@ -94,12 +94,13 @@ class Command(BaseCommand):
         
         with transaction.atomic():
             for entry in data:
-                job_rank = entry['job_rank']
+                job_rank_value = entry['job_rank']
+                job_rank_instance = JobRank.objects.get(name=job_rank_value)
                 for category_data in entry['categories']:
                     category_name = category_data['name']
                     category, created = QuestionCategory.objects.get_or_create(
                         name=category_name,
-                        job_rank=job_rank
+                        job_rank=job_rank_instance
                     )
                     for order, question_text in enumerate(category_data['questions'], start=1):
                         Question.objects.get_or_create(

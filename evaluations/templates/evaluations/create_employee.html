@@ -1,10 +1,10 @@
-
 {% extends 'evaluations/base.html' %}
 
 {% block content %}
 <h2>ایجاد کارمند جدید</h2>
 <form method="post">
     {% csrf_token %}
+    
     <label for="file_number">شماره پرسنلی:</label>
     <input type="text" id="file_number" name="file_number" required><br><br>
 
@@ -15,18 +15,26 @@
     <input type="text" id="job_title" name="job_title" required><br><br>
 
     <label for="job_rank">رتبه شغلی:</label>
-    <select id="job_rank" name="job_rank" required>
-        <option value="0">مدیر ارشد</option>
-        <option value="1">مدیر</option>
-        <option value="2">کارمند</option>
-    </select><br><br>
+    <div style="display: flex; align-items: center;">
+        <select id="job_rank" name="job_rank" required>
+            {% for rank in job_ranks %}
+                <option value="{{ rank.id }}">{{ rank.name }}</option>
+            {% endfor %}
+        </select>
+        <a href="{% url 'create_job_rank' %}" style="margin-left: 10px;">افزودن رتبه شغلی جدید</a>
+    </div>
+    <br>
 
     <label for="department">دپارتمان:</label>
-    <select id="department" name="department" required>
-        {% for department in departments %}
-            <option value="{{ department.id }}">{{ department.name }}</option>
-        {% endfor %}
-    </select><br><br>
+    <div style="display: flex; align-items: center;">
+        <select id="department" name="department" required>
+            {% for department in departments %}
+                <option value="{{ department.id }}">{{ department.name }}</option>
+            {% endfor %}
+        </select>
+        <a href="{% url 'create_department' %}" style="margin-left: 10px;">افزودن دپارتمان جدید</a>
+    </div>
+    <br>
 
     <button type="submit">ایجاد</button>
 </form>

@@ -1,0 +1,12 @@
+<!-- templates/evaluations/create_job_rank.html -->
+
+{% extends 'evaluations/base.html' %}
+
+{% block content %}
+<h2>ایجاد رتبه شغلی جدید</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">ایجاد</button>
+</form>
+{% endblock %}

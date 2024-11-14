@@ -1,18 +1,48 @@
-{% extends 'evaluations/base.html' %}
+{% load static %}
+{% load form_extras %}
 
-{% block content %}
-<h2>ارزیابی {{ employee.name }}</h2>
-<form method="post">
-    {% csrf_token %}
-    {% for category in form.categories %}
-        <h3>{{ category.name }}</h3>
-        {% for field in category.fields %}
-            <div>
-                <p><strong>{{ field.label }}</strong></p>
-                {{ field }}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>ارزیابی {{ employee.name }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            <!-- Tabs navigation -->
+            <ul class="nav nav-tabs" id="evaluationTabs" role="tablist">
+                {% for category in categories %}
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link {% if forloop.first %}active{% endif %}" id="tab-{{ forloop.counter }}" data-bs-toggle="tab" data-bs-target="#content-{{ forloop.counter }}" type="button" role="tab" aria-controls="content-{{ forloop.counter }}" aria-selected="true">
+                        {{ category.category.name }}
+                    </button>
+                </li>
+                {% endfor %}
+            </ul>
+
+            <!-- Tabs content -->
+            <div class="tab-content">
+                {% for category in categories %}
+                <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="content-{{ forloop.counter }}" role="tabpanel" aria-labelledby="tab-{{ forloop.counter }}">
+                    <h3>{{ category.category.name }}</h3>
+                    {% for question in category.questions %}
+                    <div class="mb-3">
+                        <label>{{ question.text }}</label>
+                        {{ form.fields|get_field:"question_{{ question.id }}" }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
-    {% endfor %}
-    <button type="submit">ثبت ارزیابی</button>
-</form>
-{% endblock %}
+
+            <button type="submit" class="btn btn-primary">ارسال</button>
+        </form>
+    </div>
+
+    <!-- Include Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
