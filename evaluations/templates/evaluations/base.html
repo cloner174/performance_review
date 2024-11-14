@@ -16,10 +16,10 @@
             <ul>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'home' %}">خانه</a></li>
-                    {% if user|has_group:"Manager" or user|has_group:"General Manager" %}
+                    {% if user|has_group:"مدیر" or user|has_group:"مدیر ارشد" %}
                         <li><a href="{% url 'employee_list' %}">لیست کارکنان</a></li>
                         <li><a href="{% url 'create_employee' %}">ایجاد کارمند جدید</a></li>
-                    {% elif user|has_group:"Employee" %}
+                    {% elif user|has_group:"کارمند" %}
                         <li><a href="{% url 'view_own_evaluations' %}">ارزیابی‌های من</a></li>
                     {% endif %}
                     <li>

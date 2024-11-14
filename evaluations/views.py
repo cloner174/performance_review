@@ -30,15 +30,15 @@ def home(request):
 
 
 def is_employee(user):
-    return user.groups.filter(name='Employee').exists()
+    return user.groups.filter(name='کارمند').exists()
 
 
 def is_manager(user):
-    return user.groups.filter(name='Manager').exists()
+    return user.groups.filter(name='مدیر').exists()
 
 
 def is_general_manager(user):
-    return user.groups.filter(name='General Manager').exists()
+    return user.groups.filter(name='مدیر ارشد').exists()
 
 
 def user_department(user):
@@ -74,7 +74,7 @@ def create_employee(request):
         password = User.objects.make_random_password()
         user = User.objects.create_user(username=username, password=password)
         
-        employee_group = Group.objects.get(name='Employee')
+        employee_group = Group.objects.get(name='کارمند')
         user.groups.add(employee_group)
         
         employee = Employee.objects.create(

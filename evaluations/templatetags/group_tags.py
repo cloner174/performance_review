@@ -7,7 +7,7 @@ register = template.Library()
 def has_group(user, group_name):
     """
     Returns True if the user is in the given group, else False.
-    Usage in template: {% if user|has_group:"Manager" %}
+    Usage in template: {% if user|has_group:"مدیر" %}
     """
     return user.groups.filter(name=group_name).exists()
 #cloner174

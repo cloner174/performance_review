@@ -10,9 +10,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Define groups
         groups = {
-            'Employee': [],
-            'Manager': [],
-            'General Manager': [],
+            'کارمند': [],
+            'مدیر': [],
+            'مدیر ارشد': [],
         }
         
         evaluation_content_type = ContentType.objects.get_for_model(Evaluation)
@@ -23,14 +23,14 @@ class Command(BaseCommand):
             'view_all_evaluations': Permission.objects.get(codename='view_all_evaluations', content_type=evaluation_content_type),
         }
         
-        groups['Employee'].append(permissions['view_own_evaluation'])
+        groups['کارمند'].append(permissions['view_own_evaluation'])
         
-        groups['Manager'].extend([
+        groups['مدیر'].extend([
             permissions['view_own_evaluation'],
             permissions['edit_department_evaluation'],
         ])
         
-        groups['General Manager'].extend([
+        groups['مدیر ارشد'].extend([
             permissions['view_own_evaluation'],
             permissions['edit_department_evaluation'],
             permissions['view_all_evaluations'],
