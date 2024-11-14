@@ -12,7 +12,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         data = [
             {
-                'job_rank': 0,  # مدیر ارشد (Karshenas)
+                'job_rank': 0,  # مدیر ارشد 
                 'categories': [
                     {
                         'name': 'دانش، مهارت وتوانایی',
@@ -39,7 +39,7 @@ class Command(BaseCommand):
                 ],
             },
             {
-                'job_rank': 1,  # مدیر (Modir)
+                'job_rank': 1,  # مدیر 
                 'categories': [
                     {
                         'name': 'دانش، مهارت و توانایی',
@@ -66,7 +66,7 @@ class Command(BaseCommand):
                 ],
             },
             {
-                'job_rank': 2,  # کارمند (Karmand)
+                'job_rank': 2,  # کارمند 
                 'categories': [
                     {
                         'name': 'دانش، مهارت و توانایی',
