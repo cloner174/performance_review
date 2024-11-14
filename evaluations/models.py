@@ -18,10 +18,9 @@ class Department(models.Model):
 class Employee(models.Model):
     
     JOB_RANK_CHOICES = [
-        (0, 'کارشناس'),       # Karshenas
+        (0, 'مدیر ارشد'),       # Karshenas
         (1, 'مدیر'),          # Modir
         (2, 'کارمند'),        # Karmand
-        (3, 'کارگر'),         # Kargar
     ]
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
