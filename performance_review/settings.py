@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'evaluations',
-    'django_extensions',
+    #'django_extensions',
     #'debug_toolbar',
 ]
 
