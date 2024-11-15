@@ -77,12 +77,19 @@ def create_employee(request):
         file_number = request.POST.get('file_number')
         name = request.POST.get('name')
         job_title = request.POST.get('job_title')
-        job_rank_id = request.POST.get('job_rank')
-        job_rank = JobRank.objects.get(id=job_rank_id)
+        try:
+            job_rank_id = request.POST.get('job_rank')
+            job_rank = JobRank.objects.get(id=job_rank_id)
+        except JobRank.DoesNotExist:
+            return render(request, 'evaluations/create_employee.html', {
+                'departments': departments,
+                'job_ranks': JobRank.objects.all(),
+                'error': 'رتبه شغلی انتخاب‌شده وجود ندارد.',
+            })
         department_id = request.POST.get('department')
         
         username = f"user_{file_number}"
-        password = User.objects.make_random_password()
+        password = request.POST.get('password')
         if User.objects.filter(username=username).exists():
             # Handle the error (e.g., return an error message)
             return render(request, 'evaluations/create_employee.html', {
@@ -126,7 +133,12 @@ def create_employee(request):
     
     else:
         departments = Department.objects.all()
-        return render(request, 'evaluations/create_employee.html', {'departments': departments})
+        job_ranks = JobRank.objects.all()
+        return render(request, 'evaluations/create_employee.html', {
+            'departments': departments,
+            'job_ranks': job_ranks,  # Pass job_ranks to the template
+        })
+    
 
 
 @login_required

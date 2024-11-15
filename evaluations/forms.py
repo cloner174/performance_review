@@ -1,6 +1,6 @@
 #
 from django import forms
-from .models import Question, QuestionCategory
+from .models import Question, QuestionCategory, Answer
 
 
 class EvaluationForm(forms.Form):

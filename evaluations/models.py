@@ -32,12 +32,8 @@ class Department(models.Model):
     
 
 class JobRank(models.Model):
-    JOB_RANK_CHOICES = [
-        (0, 'مدیر ارشد'),       # Karshenas
-        (1, 'مدیر'),          # Modir
-        (2, 'کارمند'),        # Karmand
-    ]
-    name = models.IntegerField(choices=JOB_RANK_CHOICES, null=True)
+    
+    name = models.CharField(max_length=100, unique=True, default='کارمند')
     
     def __str__(self):
         return self.name
@@ -98,7 +94,7 @@ class Profile(models.Model):
 
 class QuestionCategory(models.Model):
     name = models.CharField(max_length=100)
-    job_rank = models.IntegerField(choices=Employee.JOB_RANK_CHOICES, null=True)
+    job_rank = models.ForeignKey(JobRank, null=True, blank=True, on_delete=models.SET_NULL)
     
     class Meta:
         unique_together = ('name', 'job_rank')

@@ -2,14 +2,17 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Department, Employee, Profile, QuestionCategory, Question, Evaluation, Answer
+from .models import Department, Employee, Profile, QuestionCategory, Question, Evaluation, Answer, JobRank
 
+
+@admin.register(JobRank)
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ('name',)
 
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
     list_display = ('name',)
-
-
+    
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ('name', 'file_number', 'job_title', 'get_job_rank_display', 'department')

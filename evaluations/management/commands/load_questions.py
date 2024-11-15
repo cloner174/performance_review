@@ -4,6 +4,11 @@ from django.core.management.base import BaseCommand
 from evaluations.models import QuestionCategory, Question, JobRank
 from django.db import transaction
 
+JOB_RANK_GROUPS = {
+    0: 'مدیر ارشد',  # Senior Manager
+    1: 'مدیر',       # Manager
+    2: 'کارمند',     # Employee
+}
 
 class Command(BaseCommand):
     
@@ -94,7 +99,7 @@ class Command(BaseCommand):
         
         with transaction.atomic():
             for entry in data:
-                job_rank_value = entry['job_rank']
+                job_rank_value = JOB_RANK_GROUPS[entry['job_rank']]
                 job_rank_instance = JobRank.objects.get(name=job_rank_value)
                 for category_data in entry['categories']:
                     category_name = category_data['name']
