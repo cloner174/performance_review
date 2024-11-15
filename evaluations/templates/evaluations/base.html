@@ -1,4 +1,3 @@
-
 {% load static %}
 {% load group_tags %}
 
@@ -7,41 +6,76 @@
 <head>
     <meta charset="UTF-8">
     <title>سیستم ارزیابی عملکرد</title>
+    <!-- افزودن Bootstrap با پشتیبانی از RTL -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.rtl.min.css' %}">
+    <!-- تم فعلی -->
+    <link rel="stylesheet" href="{% static 'css/theme-light.css' %}" id="theme-link">
+    <!-- استایل‌های سفارشی -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <header>
-        <h1>سیستم ارزیابی عملکرد</h1>
-        <nav>
-            <ul>
+    <header class="bg-primary text-white py-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h1 class="h3 mb-0">سیستم ارزیابی عملکرد</h1>
+            <!-- دکمه تغییر تم -->
+            <button id="theme-toggle" class="btn btn-light">تغییر تم</button>
+        </div>
+        <nav class="container mt-3">
+            <ul class="nav nav-pills">
                 {% if user.is_authenticated %}
-                    <li><a href="{% url 'home' %}">خانه</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">خانه</a></li>
                     {% if user|has_group:"مدیر" or user|has_group:"مدیر ارشد" %}
-                        <li><a href="{% url 'employee_list' %}">لیست کارکنان</a></li>
-                        <li><a href="{% url 'create_employee' %}">ایجاد کارمند جدید</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'employee_list' %}">لیست کارکنان</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'create_employee' %}">ایجاد کارمند جدید</a></li>
                     {% elif user|has_group:"کارمند" %}
-                        <li><a href="{% url 'view_own_evaluations' %}">ارزیابی‌های من</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'view_own_evaluations' %}">ارزیابی‌های من</a></li>
                     {% endif %}
-                    <li>
+                    <li class="nav-item">
                         <form action="{% url 'logout' %}" method="post" style="display: inline;">
                             {% csrf_token %}
-                            <button type="submit" style="background: none; border: none; padding: 0; font: inherit; color: inherit; cursor: pointer;">خروج</button>
+                            <button type="submit" class="btn btn-link nav-link">خروج</button>
                         </form>
                     </li>
                 {% else %}
-                    <li><a href="{% url 'login' %}">ورود</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">ورود</a></li>
                 {% endif %}
             </ul>
         </nav>
     </header>
-    <hr>
-    <main>
+    <main class="container mt-4">
         {% block content %}
         {% endblock %}
     </main>
-    <footer>
-        <hr>
+    <footer class="bg-light text-center py-3 mt-5">
         <p>&copy; 2024 سیستم ارزیابی عملکرد</p>
     </footer>
+    <!-- افزودن Bootstrap JS -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <!-- اسکریپت تغییر تم -->
+    <script>
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeLink = document.getElementById('theme-link');
+
+        function switchTheme() {
+            if (themeLink.getAttribute('href') == '{% static "css/theme-light.css" %}') {
+                themeLink.setAttribute('href', '{% static "css/theme-dark.css" %}');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeLink.setAttribute('href', '{% static "css/theme-light.css" %}');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const storedTheme = localStorage.getItem('theme') || 'light';
+            if (storedTheme === 'dark') {
+                themeLink.setAttribute('href', '{% static "css/theme-dark.css" %}');
+            } else {
+                themeLink.setAttribute('href', '{% static "css/theme-light.css" %}');
+            }
+        });
+
+        themeToggleBtn.addEventListener('click', switchTheme);
+    </script>
 </body>
 </html>

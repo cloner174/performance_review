@@ -1,44 +1,58 @@
 {% extends 'evaluations/base.html' %}
 
 {% block content %}
-<h2>ایجاد کارمند جدید</h2>
-<form method="post">
-    {% csrf_token %}
-    
-    <label for="file_number">شماره پرسنلی:</label>
-    <input type="text" id="file_number" name="file_number" required><br><br>
+<div class="container">
+    <h2 class="mb-4">ایجاد کارمند جدید</h2>
+    <form method="post" class="row g-3">
+        {% csrf_token %}
 
-    <label for="name">نام و نام خانوادگی:</label>
-    <input type="text" id="name" name="name" required><br><br>
+        <div class="col-md-6">
+            <label for="file_number" class="form-label">شماره پرسنلی:</label>
+            <input type="text" id="file_number" name="file_number" class="form-control" required>
+        </div>
 
-    <label for="job_title">عنوان شغل:</label>
-    <input type="text" id="job_title" name="job_title" required><br><br>
+        <div class="col-md-6">
+            <label for="name" class="form-label">نام و نام خانوادگی:</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
 
-    <label for="password">رمز عبور:</label>
-    <input type="password" name="password" id="password" required><br><br>
+        <div class="col-md-6">
+            <label for="job_title" class="form-label">عنوان شغل:</label>
+            <input type="text" id="job_title" name="job_title" class="form-control" required>
+        </div>
 
-    <label for="job_rank">رتبه شغلی:</label>
-    <div style="display: flex; align-items: center;">
-        <select id="job_rank" name="job_rank" required>
-            {% for rank in job_ranks %}
-                <option value="{{ rank.id }}">{{ rank.name }}</option>
-            {% endfor %}
-        </select>
-        <a href="{% url 'create_job_rank' %}" style="margin-left: 10px;">افزودن رتبه شغلی جدید</a>
-    </div>
-    <br>
+        <div class="col-md-6">
+            <label for="password" class="form-label">رمز عبور:</label>
+            <input type="password" name="password" id="password" class="form-control" required>
+        </div>
 
-    <label for="department">دپارتمان:</label>
-    <div style="display: flex; align-items: center;">
-        <select id="department" name="department" required>
-            {% for department in departments %}
-                <option value="{{ department.id }}">{{ department.name }}</option>
-            {% endfor %}
-        </select>
-        <a href="{% url 'create_department' %}" style="margin-left: 10px;">افزودن دپارتمان جدید</a>
-    </div>
-    <br>
+        <div class="col-md-6">
+            <label for="job_rank" class="form-label">رتبه شغلی:</label>
+            <div class="input-group">
+                <select id="job_rank" name="job_rank" class="form-select" required>
+                    {% for rank in job_ranks %}
+                        <option value="{{ rank.id }}">{{ rank.name }}</option>
+                    {% endfor %}
+                </select>
+                <a href="{% url 'create_job_rank' %}" class="btn btn-outline-secondary">افزودن رتبه شغلی جدید</a>
+            </div>
+        </div>
 
-    <button type="submit">ایجاد</button>
-</form>
+        <div class="col-md-6">
+            <label for="department" class="form-label">دپارتمان:</label>
+            <div class="input-group">
+                <select id="department" name="department" class="form-select" required>
+                    {% for department in departments %}
+                        <option value="{{ department.id }}">{{ department.name }}</option>
+                    {% endfor %}
+                </select>
+                <a href="{% url 'create_department' %}" class="btn btn-outline-secondary">افزودن دپارتمان جدید</a>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-success">ایجاد</button>
+        </div>
+    </form>
+</div>
 {% endblock %}

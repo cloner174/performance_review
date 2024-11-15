@@ -1,7 +1,9 @@
-
 {% extends 'evaluations/base.html' %}
 
 {% block content %}
-<h2>دسترسی غیرمجاز</h2>
-<p>شما دسترسی لازم برای مشاهده این صفحه را ندارید.</p>
+<div class="container mt-4 text-center">
+    <h2 class="text-danger">دسترسی غیرمجاز</h2>
+    <p>شما دسترسی لازم برای مشاهده این صفحه را ندارید.</p>
+    <a href="{% url 'home' %}" class="btn btn-primary">بازگشت به صفحه اصلی</a>
+</div>
 {% endblock %}

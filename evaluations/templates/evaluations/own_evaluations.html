@@ -1,25 +1,30 @@
-
 {% extends 'evaluations/base.html' %}
 
 {% block content %}
-<h2>ارزیابی‌های من</h2>
-<table border="1">
-    <tr>
-        <th>تاریخ</th>
-        <th>ماه</th>
-        <th>مجموع امتیازات</th>
-        <th>عملیات</th>
-    </tr>
-    {% for evaluation in evaluations %}
-    <tr>
-        <td>{{ evaluation.date }}</td>
-        <td>{{ evaluation.month }}</td>
-        <td>{{ evaluation.total_score }}</td>
-        <td>
-            <a href="{% url 'view_evaluation' evaluation.id %}">مشاهده</a> |
-            <a href="{% url 'export_evaluation_to_excel' evaluation.id %}">دانلود</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="container mt-4">
+    <h2>ارزیابی‌های من</h2>
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th>تاریخ</th>
+                <th>ماه</th>
+                <th>مجموع امتیازات</th>
+                <th>عملیات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for evaluation in evaluations %}
+            <tr>
+                <td>{{ evaluation.date }}</td>
+                <td>{{ evaluation.month }}</td>
+                <td>{{ evaluation.total_score }}</td>
+                <td>
+                    <a href="{% url 'view_evaluation' evaluation.id %}" class="btn btn-info btn-sm">مشاهده</a>
+                    <a href="{% url 'export_evaluation_to_excel' evaluation.id %}" class="btn btn-success btn-sm">دانلود</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

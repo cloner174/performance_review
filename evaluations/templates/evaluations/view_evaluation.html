@@ -1,19 +1,25 @@
 {% extends 'evaluations/base.html' %}
 
 {% block content %}
-<h2>نتایج ارزیابی {{ evaluation.employee.name }}</h2>
-<table>
-    <tr>
-        <th>سوال</th>
-        <th>پاسخ</th>
-    </tr>
-    {% for answer in answers %}
-    <tr>
-        <td>{{ answer.question.text }}</td>
-        <td>{{ answer.get_choice_display }}</td>
-    </tr>
-    {% endfor %}
-</table>
-<p>مجموع امتیازات: {{ evaluation.total_score }}</p>
-<a href="{% url 'export_evaluation_to_excel' evaluation.id %}">دانلود به صورت اکسل</a>
+<div class="container mt-4">
+    <h2>نتایج ارزیابی {{ evaluation.employee.name }}</h2>
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+            <tr>
+                <th>سوال</th>
+                <th>پاسخ</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for answer in answers %}
+            <tr>
+                <td>{{ answer.question.text }}</td>
+                <td>{{ answer.get_choice_display }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>مجموع امتیازات: <strong>{{ evaluation.total_score }}</strong></p>
+    <a href="{% url 'export_evaluation_to_excel' evaluation.id %}" class="btn btn-success">دانلود به صورت اکسل</a>
+</div>
 {% endblock %}
